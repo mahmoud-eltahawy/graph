@@ -1,25 +1,24 @@
 use bevy::{color::palettes::css::*, prelude::*};
+use bevy_panorbit_camera::{PanOrbitCamera, PanOrbitCameraPlugin};
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
+        .add_plugins(PanOrbitCameraPlugin)
         .add_systems(Startup, setup)
         .add_systems(Update, (graph, xyz))
         .run();
 }
-
-#[derive(Component)]
-struct Camera;
 
 #[derive(Resource)]
 struct WindowWidth(f32);
 
 fn setup(mut commands: Commands, windows: Query<&mut Window>) {
     commands.spawn((
-        Camera3d::default(),
-        Transform::from_xyz(10., -100., 10.).looking_at(Vec3::ZERO, Vec3::Z),
-        Camera,
+        Transform::from_xyz(0., -100., 0.).looking_at(Vec3::ZERO, Vec3::Z),
+        PanOrbitCamera::default(),
     ));
+
     let width = windows
         .iter()
         .map(|x| x.resolution.width())
